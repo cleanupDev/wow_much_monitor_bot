@@ -7,12 +7,14 @@ from telegram import Bot
 
 load_dotenv()
 
-API_KEY = os.environ['API_KEY']
-ADDRESS = os.environ['ADDRESS']
+API_KEY = os.getenv('API_KEY')
+ADDRESS = os.getenv('ADDRESS')
 
-TELEGRAM_TOKEN = os.environ['TELEGRAM_TOKEN']
-CHAT_ID = os.environ['CHAT_ID']
-BOT_NAME = os.environ['BOT_NAME']
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+CHAT_ID = os.getenv('CHAT_ID')
+BOT_NAME = os.getenv('BOT_NAME')
+
+NUMBER = int(os.getenv('NUMBER'))
 
 METHOD_ID = '0xfaa19c2b' # Wow Much coin created!
 
@@ -47,4 +49,6 @@ async def monitor_address(address, method_id, interval):
             print(f'{BOT_NAME} found no recent transactions with method ID ----- Time: {time.ctime()}')
         await asyncio.sleep(interval)
 
+
+time.sleep(NUMBER)
 asyncio.run(monitor_address(ADDRESS, METHOD_ID, 20))

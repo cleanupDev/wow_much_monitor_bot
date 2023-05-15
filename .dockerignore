@@ -3,3 +3,5 @@
 Dockerfile
 docker-compose.yaml
 .dockerignore
+LICENSE
+README.md
