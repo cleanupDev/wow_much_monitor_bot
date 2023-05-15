@@ -31,7 +31,7 @@ async def get_recent_transactions_with_method_id(address, method_id):
         # Get the current time in Unix timestamp format
         current_time = int(time.time())
         # Filter for transactions from the past 5 minutes
-        recent_transactions = [tx for tx in transactions_with_method_id if current_time - int(tx['timeStamp']) <= 300]
+        recent_transactions = [tx for tx in transactions_with_method_id if current_time - int(tx['timeStamp']) <= 100]
         return recent_transactions
     else:
         return []
