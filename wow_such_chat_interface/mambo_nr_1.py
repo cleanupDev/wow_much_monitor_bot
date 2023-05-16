@@ -15,7 +15,6 @@ ADDRESS = os.getenv('ADDRESS')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 CHAT_ID = os.getenv('CHAT_ID')
 
-#TELEGRAM_TOKEN = '6090299176:AAFObU84x3jLxxvMPQbPOXHrtdoZOni0oUM'
 
 client = docker.from_env()
 bot = aiogram.Bot(TELEGRAM_TOKEN)
@@ -29,9 +28,9 @@ async def handle_status(message: aiogram.types.Message):
 
     # Send the status message
     if status_message == '':
-        await bot.send_message(chat_id=message.chat.id, text='No bots running')
+        await bot.send_message(chat_id=CHAT_ID, text='No bots running')
     else:
-        await bot.send_message(chat_id=message.chat.id, text=status_message)
+        await bot.send_message(chat_id=CHAT_ID, text=status_message)
 
 
 class Form(StatesGroup):
@@ -41,21 +40,21 @@ class Form(StatesGroup):
 
 @dp.message_handler(commands='start')
 async def start(message: types.Message):
-    await bot.send_message(chat_id=message.chat.id, text='Bot name:')
+    await bot.send_message(chat_id=CHAT_ID, text='Bot name:')
     await Form.name.set()
 
 @dp.message_handler(state=Form.name)
 async def process_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['name'] = message.text.replace(' ', '_')
-    await bot.send_message(chat_id=message.chat.id, text='Address:')
+    await bot.send_message(chat_id=CHAT_ID, text='Address:')
     await Form.next()
 
 @dp.message_handler(state=Form.address)
 async def process_address(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['address'] = message.text
-    await bot.send_message(chat_id=message.chat.id, text='Method:\nadd liquidity | create token')
+    await bot.send_message(chat_id=CHAT_ID, text='Method:\nadd liquidity | create token')
     await Form.next()
 
 @dp.message_handler(state=Form.method)
@@ -63,7 +62,7 @@ async def process_method(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['method'] = message.text.lower()
 
-    await bot.send_message(chat_id=message.chat.id, text='Please wait...')
+    await bot.send_message(chat_id=CHAT_ID, text='Please wait...')
 
     env_vars = {}
 
@@ -83,7 +82,7 @@ async def process_method(message: types.Message, state: FSMContext):
     container = client.containers.run(image='monitor_bot', name=data['name'], environment=env_vars, detach=True)
 
     # Send a message indicating that the container has started
-    await bot.send_message(chat_id=message.chat.id, text=f"Started Docker Container {container.id} (name: {data['name']}) at address {data['address']}")
+    await bot.send_message(chat_id=CHAT_ID, text=f"Started Docker Container {container.id} (name: {data['name']}) at address {data['address']}")
     await state.finish()
 
 if __name__ == '__main__':
