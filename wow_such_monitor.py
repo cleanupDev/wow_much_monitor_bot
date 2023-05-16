@@ -13,10 +13,10 @@ ADDRESS = os.getenv('ADDRESS')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 CHAT_ID = os.getenv('CHAT_ID')
 BOT_NAME = os.getenv('BOT_NAME')
+METHOD_ID = os.getenv('METHOD_ID')
 
-NUMBER = int(os.getenv('NUMBER'))
 
-METHOD_ID = '0xfaa19c2b' # Wow Much coin created!
+#METHOD_ID = '0xfaa19c2b' # Wow Much coin created!
 
 bot = Bot(token=TELEGRAM_TOKEN)
 
@@ -37,12 +37,12 @@ async def get_recent_transactions_with_method_id(address, method_id):
         return []
 
 async def monitor_address(address, method_id, interval):
-    await bot.send_message(chat_id=CHAT_ID, text=f"🏁🏁🏁\n<b><i><code style='color:red;'>{BOT_NAME}</code></i></b>\nstarted monitoring address\n{address}\nfor transactions with method ID {method_id} \n🏁🏁🏁", parse_mode='HTML')
+    await bot.send_message(chat_id=CHAT_ID, text=f"🏁🏁🏁\n<b><i><code style='color:red;'>{BOT_NAME}</code></i></b>\nstarted monitoring address\n{address}\nfor transactions with method ID {'add liquidity' if method_id == '0xe8e33700' else 'create token'} \n🏁🏁🏁", parse_mode='HTML')
     while True:
         transactions = await get_recent_transactions_with_method_id(address, method_id)
         if transactions:
             for tx in transactions:
-                message = f"🚨🚨🚨 NEW COIN CREATED! 🚨🚨🚨\nRecent transaction with method ID\n{method_id}\n at block {tx['blockNumber']} with hash {tx['hash']}\nLET'S GOOOO 💰💰💰"
+                message = f"🚨🚨🚨 NEW COIN CREATED! 🚨🚨🚨\nRecent transaction with method ID\n{'add liquidity' if method_id == '0xe8e33700' else 'create token'}\n at block {tx['blockNumber']} with hash bscscan.com/tx/{tx['hash']}\nLET'S GOOOO 💰💰💰"
                 print(message)
                 await bot.send_message(chat_id=CHAT_ID, text=message)
         else:
@@ -50,5 +50,4 @@ async def monitor_address(address, method_id, interval):
         await asyncio.sleep(interval)
 
 
-time.sleep(NUMBER)
-asyncio.run(monitor_address(ADDRESS, METHOD_ID, 20))
+asyncio.run(monitor_address(ADDRESS, METHOD_ID, 30))
