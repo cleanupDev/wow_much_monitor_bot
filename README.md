@@ -1,2 +1,7 @@
 # wow_much_monitor_bot
-Get rich quick!
+
+Simple test for creating new docker containers with chat commands!
+
+Also tracks new crypto coins while doing so!
+
+
