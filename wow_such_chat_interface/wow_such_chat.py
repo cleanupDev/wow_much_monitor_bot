@@ -8,8 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-#TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-TELEGRAM_TOKEN = '6090299176:AAFObU84x3jLxxvMPQbPOXHrtdoZOni0oUM'
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 
 client = docker.from_env()
 bot = aiogram.Bot(TELEGRAM_TOKEN)
